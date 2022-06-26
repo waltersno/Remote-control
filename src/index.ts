@@ -1,5 +1,6 @@
-import { terminalLogger } from './terminalLogger.js';
 import { createWebSocketStream, WebSocketServer } from 'ws';
+import { terminalLogger } from './terminalLogger.js';
+import { wsMessageHandler } from './wsMessageHandler.js';
 
 const webSocketServer = new WebSocketServer({ port: 8080 });
 
@@ -9,10 +10,7 @@ webSocketServer.on('connection', (ws) => {
     decodeStrings: false,
   });
 
-  wsStream.on('data', (chunk) => {
-    console.log(chunk);
-    ws.send(chunk);
-  });
+  wsStream.on('data', wsMessageHandler(wsStream));
 
   wsStream.on('error', () => {
     terminalLogger.logError();

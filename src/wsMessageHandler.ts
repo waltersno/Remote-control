@@ -2,6 +2,7 @@ import { terminalLogger } from './terminalLogger.js';
 import { mouseMoveHandler } from './mouseMoveHandler.js';
 import internal from 'stream';
 import { paintHandler } from './paintHandler.js';
+import { printScreen } from './printScreen.js';
 
 export const wsMessageHandler =
   (wsStream: internal.Duplex) => (data: string) => {
@@ -17,6 +18,8 @@ export const wsMessageHandler =
           break;
         case data.startsWith('draw_'):
           paintHandler(data, wsStream);
+        case data.startsWith('prnt_scrn'):
+          printScreen(wsStream);
         default:
           break;
       }

@@ -2,7 +2,11 @@ import { createWebSocketStream, WebSocketServer } from 'ws';
 import { terminalLogger } from './terminalLogger.js';
 import { wsMessageHandler } from './wsMessageHandler.js';
 
-const webSocketServer = new WebSocketServer({ port: 8080 });
+const PORT = 8080;
+
+const webSocketServer = new WebSocketServer({ port: PORT }, () => {
+  terminalLogger.log(`Server started on the ${PORT} port!`);
+});
 
 webSocketServer.on('connection', (ws) => {
   const wsStream = createWebSocketStream(ws, {

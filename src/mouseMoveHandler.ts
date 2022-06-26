@@ -1,5 +1,6 @@
 import robot from 'robotjs';
 import internal from 'stream';
+import { terminalLogger } from './terminalLogger.js';
 
 export const mouseMoveHandler = (
   command: string,
@@ -30,4 +31,5 @@ export const mouseMoveHandler = (
     default:
       break;
   }
+  terminalLogger.logSuccess();
 };

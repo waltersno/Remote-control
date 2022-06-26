@@ -7,7 +7,7 @@ import { printScreen } from './printScreen.js';
 export const wsMessageHandler =
   (wsStream: internal.Duplex) => (data: string) => {
     try {
-      terminalLogger.log(data);
+      terminalLogger.log(`Received: ${data}`);
 
       switch (true) {
         case data.startsWith('mouse_'):
@@ -18,8 +18,10 @@ export const wsMessageHandler =
           break;
         case data.startsWith('draw_'):
           paintHandler(data, wsStream);
+          break;
         case data.startsWith('prnt_scrn'):
           printScreen(wsStream);
+          break;
         default:
           break;
       }

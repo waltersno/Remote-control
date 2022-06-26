@@ -1,4 +1,6 @@
 import robot from 'robotjs';
+import { terminalLogger } from '../terminalLogger.js';
+
 export const drawSquare = (width: number) => {
   const { x, y } = robot.getMousePos();
   robot.mouseToggle('down');
@@ -7,4 +9,5 @@ export const drawSquare = (width: number) => {
   robot.moveMouseSmooth(x, y + width);
   robot.moveMouseSmooth(x, y);
   robot.mouseToggle('up');
+  terminalLogger.logSuccess();
 };

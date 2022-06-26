@@ -12,13 +12,27 @@ export const printScreen = async (wsStream: internal.Duplex) => {
     screenSize * 2,
   );
 
-  const jimpOption = {
-    data: screen.image,
-    width: screen.width,
-    height: screen.height,
-  };
+  const width = screen.byteWidth / screen.bytesPerPixel;
+  const height = screen.height;
 
-  const jimp = new Jimp(jimpOption);
+  const jimp = new Jimp(width, height);
+
+  let red: number, green: number, blue: number;
+  screen.image.forEach((byte: number, i: number) => {
+    switch (i % 4) {
+      case 0:
+        return (blue = byte);
+      case 1:
+        return (green = byte);
+      case 2:
+        return (red = byte);
+      case 3:
+        jimp.bitmap.data[i - 3] = red;
+        jimp.bitmap.data[i - 2] = green;
+        jimp.bitmap.data[i - 1] = blue;
+        jimp.bitmap.data[i] = 255;
+    }
+  });
 
   const base64Screen = await jimp.getBase64Async(Jimp.MIME_PNG);
   const base64 = base64Screen.split(',')[1];
